@@ -1,0 +1,49 @@
+---
+- name: List Existing Proxmox Resource Pools
+  ansible.builtin.command:
+    cmd: pveum pool list
+  register: pool_list
+  changed_when: false
+
+- name: Configure Proxmox Resources Pools
+  ansible.builtin.include_tasks: pools.yml
+  loop: "{{ pve_permissions_pools }}"
+  loop_control:
+    loop_var: pool
+
+- name: List Existing Proxmox Groups
+  ansible.builtin.command:
+    cmd: pveum group list
+  register: group_list
+  changed_when: false
+
+- name: Configure Proxmox Groups
+  ansible.builtin.include_tasks: groups.yml
+  loop: "{{ pve_permissions_groups }}"
+  loop_control:
+    loop_var: group
+
+- name: List Roles
+  ansible.builtin.command:
+    cmd: pveum role list
+  register: role_list
+  changed_when: false
+
+- name: Configure Proxmox Roles
+  ansible.builtin.include_tasks: roles.yml
+  loop: "{{ pve_permissions_roles }}"
+  loop_control:
+    loop_var: role
+
+- name: List Users
+  ansible.builtin.command:
+    cmd: pveum user list
+  register: user_list
+  changed_when: false
+
+- name: Configure Proxmox Users
+  ansible.builtin.include_tasks: users.yml
+  when: pve_permissions_users is defined and pve_permissions_users|length > 0
+  loop: "{{ pve_permissions_users }}"
+  loop_control:
+    loop_var: user

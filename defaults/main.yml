@@ -1,0 +1,9 @@
+---
+# defaults file for pve_permissions
+pve_permissions_roles: []
+
+pve_permissions_users: []
+
+pve_permissions_groups: []
+
+pve_permissions_pools: []

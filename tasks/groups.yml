@@ -1,0 +1,14 @@
+---
+- name: Create PVE Group {{ group.name }}
+  ansible.builtin.command:
+    cmd: pveum group add {{ group.name }} --comment "{{ group.comment | default("") }}"
+  when: group_list.stdout | regex_search('│ ' + group.name | string + ' \s*│') is none
+  register: new_group
+
+- name: Modifiy PVE Group {{ group.name }}
+  ansible.builtin.command:
+    cmd: pveum group modify {{ group.name }} --comment "{{ group.comment | default("") }}"
+  when: |
+    (group_list.stdout | regex_search('│ ' + group.name | string + ' \s*│') is not none) and
+    (group_list.stdout | regex_search('│ ' + group.name | string + ' \s*│ ' + group.comment | default("") | string + ' \s*│.*') is none)
+    and not new_group.changed

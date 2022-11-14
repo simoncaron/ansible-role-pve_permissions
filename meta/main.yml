@@ -1,0 +1,22 @@
+---
+dependencies: []
+
+galaxy_info:
+  role_name: pve_permissions
+  author: simoncaron
+  description: A role to configure Proxmox VE Users, Roles, ACLs and Pools
+  issue_tracker_url: https://github.com/simoncaron/ansible-role-pve_permissions/issues
+  license: MIT
+  min_ansible_version: "2.4"
+  platforms:
+    - name: Debian
+      versions:
+        - bullseye
+
+  galaxy_tags:
+    - pve
+    - proxmox
+    - permissions
+    - users
+    - pools
+    - acls

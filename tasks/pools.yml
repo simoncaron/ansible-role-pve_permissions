@@ -1,0 +1,5 @@
+---
+- name: Create PVE Pool {{ pool.name }}
+  ansible.builtin.command:
+    cmd: pveum pool add {{ pool.name }} --comment "{{ pool.comment }}"
+  when: pool_list.stdout | regex_search('│ ' + pool.name | string + ' \s*│') is none

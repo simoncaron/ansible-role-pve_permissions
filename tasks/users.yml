@@ -1,0 +1,53 @@
+---
+- name: Create PVE User {{ user.name }}
+  ansible.builtin.command:
+    cmd: >
+      pveum user add {{ user.name }}@{{ user.realm }}
+        --password "{{ user.password }}"
+        --email "{{ user.email | default("") }}"
+        --comment "{{ user.comment | default("") }}"
+        --enable "{{ user.enable | default(1) }}"
+        --expire "{{ user.expire | default(0) }}"
+        --firstname "{{ user.firstname | default("") }}"
+        --lastname "{{ user.lastname | default("") }}"
+  when: >
+    user_list.stdout |
+    regex_search('│ ' + user.name + '@' + user.realm + ' \s*│.*' ) is none
+  register: new_user
+  no_log: true
+
+- name: Modifiy PVE User {{ user.name }}
+  ansible.builtin.command:
+    cmd: >
+      pveum user modify {{ user.name }}@{{ user.realm }}
+        --email "{{ user.email | default("") }}"
+        --comment "{{ user.comment | default("") }}"
+        --enable "{{ user.enable | default(1) }}"
+        --expire "{{ user.expire | default(0) }}"
+        --firstname "{{ user.firstname | default("") }}"
+        --lastname "{{ user.lastname | default("") }}"
+  when: >
+    (user_list.stdout | regex_search('│ ' + user.name + '@' + user.realm + ' \s*│.*' ) is not none) and
+    (user_list.stdout |
+    regex_search('│ ' + user.name + '@' + user.realm + ' \s*│ '
+      + user.comment | default("") + ' \s*│ '
+      + user.email | default("") + ' \s*│ '
+      + user.enable | default("1") + ' \s*│ \s*'
+      + user.expire | default("0") + ' │ '
+      + user.firstname | default("") + ' \s*│        │      │ '
+      + user.lastname | default("") + ' \s*│ '
+      + user.realm + ' \s*│.*' ) is none)
+    and not new_user.changed
+
+- name: List acls for user {{ user.name }}
+  ansible.builtin.command:
+    cmd: pveum acl list
+  register: acls_list
+  changed_when: false
+
+- name: Configure ACLs for {{ user.name }}
+  ansible.builtin.include_tasks: acls.yml
+  loop: "{{ user.acls }}"
+  loop_control:
+    loop_var: acl
+  when: user.acls is defined and user.acls|length > 0

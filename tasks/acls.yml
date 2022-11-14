@@ -1,0 +1,7 @@
+---
+- name: Grant PVE Role {{ acl.role }} to {{ user.name }}@{{ user.realm }} on {{ acl.path }}
+  ansible.builtin.command:
+    cmd: pveum acl modify {{ acl.path }} -user {{ user.name }}@{{ user.realm }} -role {{ acl.role }}
+  when: >
+    acls_list.stdout | regex_search('│ ' + acl.path | string + '.*│ ' + acl.role | string +
+    '.*│ user │ ' + user.name | string + '@' + user.realm + ' .*│') is none
