@@ -6,7 +6,7 @@
         --password "{{ user.password }}"
         --email "{{ user.email | default("") }}"
         --comment "{{ user.comment | default("") }}"
-        --groups "{{ (user.groups | join(',')) | default("") }}"
+        --groups "{{ user.groups|join(',') if user.groups is defined else "" }}"
         --enable "{{ user.enable | default(1) }}"
         --expire "{{ user.expire | default(0) }}"
         --firstname "{{ user.firstname | default("") }}"
@@ -15,7 +15,6 @@
     user_list.stdout |
     regex_search('│ ' + user.name + '@' + user.realm + ' \s*│.*' ) is none
   register: new_user
-  no_log: true
 
 - name: Modifiy PVE User {{ user.name }}
   ansible.builtin.command:
