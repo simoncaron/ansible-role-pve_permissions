@@ -6,6 +6,7 @@
         --password "{{ user.password }}"
         --email "{{ user.email | default("") }}"
         --comment "{{ user.comment | default("") }}"
+        --groups "{{ (user.groups | join(',')) | default("") }}"
         --enable "{{ user.enable | default(1) }}"
         --expire "{{ user.expire | default(0) }}"
         --firstname "{{ user.firstname | default("") }}"
