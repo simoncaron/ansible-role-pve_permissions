@@ -2,8 +2,8 @@ Ansible Role: Proxmox VE Permissions (Users/ACLs/Groups/Roles/Pools)
 =========
 
 ![Ansible Lint](https://github.com/simoncaron/ansible-role-pve_permissions/actions/workflows/lint.yml/badge.svg)
-[![Ansible Role](https://img.shields.io/ansible/role/60898.svg)](https://galaxy.ansible.com/simoncaron/pve_permissions)
-[![Ansible Role Downloads](https://img.shields.io/ansible/role/d/60898.svg)](https://galaxy.ansible.com/simoncaron/pve_permissions)
+![Ansible Release](https://github.com/simoncaron/ansible-role-pve_permissions/actions/workflows/release.yml/badge.svg)
+[![Ansible Galaxy Downloads](https://img.shields.io/badge/dynamic/json?color=blueviolet&label=Galaxy%20Downloads&query=%24.download_count&url=https%3A%2F%2Fgalaxy.ansible.com%2Fapi%2Fv1%2Froles%2F26241%2F%3Fformat%3Djson)](https://galaxy.ansible.com/ui/standalone/roles/simoncaron/pve_permissions/)
 
 An Ansible Role that configures Users/Roles/Pools/Groups on a Proxmox VE node.
 
